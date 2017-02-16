@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>百度地图</title>
+</head>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=xxxxxxxxxxxx"></script>
+<body>
+<input id="txtAddress" type="text" placeholder="请输入用餐地址" data-bind="textInput: addressInput" />
+</body>
+<script>
+    var localSearch = null;
+    //查询参数
+    var options = {
+        //智能搜索
+        onSearchComplete: function (results) {
+            //查询结果状态码
+            if (localSearch.getStatus() == BMAP_STATUS_SUCCESS) {
+                var s = convertMapSearch(results);  //对结果进行处理
+                model.locationAddress(s);   //将结果数据赋予knockout对象数组（可用其他数组对象代替）
+            }
+        }
+    };
+    localSearch = new BMap.LocalSearch("城市", options);
+    sf.addressInput.subscribe(function (val) {
+        var addr = $.trim(val);
+        if (addr == "") {
+            return;
+        }
+        localSearch.search(addr);
+    });
+    // 百度地图API功能
+    var map = new BMap.Map("allmap");    // 创建Map实例
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+    map.addControl(new BMap.MapTypeControl());   //添加地图类型控件
+    map.setCurrentCity("北京");          // 设置地图显示的城市 此项是必须设置的
+    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩
+</script>
+</html>

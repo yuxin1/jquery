@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>进度条</title>
+        <style>
+        #progressbar {
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+<div id="progressbar"></div>
+<button id="numButton">随机值 - 确定</button>
+<button id="falseButton">不确定</button>
+<button id="colorButton">随机颜色</button>
+</body>
+<script>
+    $(function() {
+        $( "#progressbar" ).progressbar({
+            value: false
+        });
+        $( "button" ).on( "click", function( event ) {
+            var target = $( event.target ),
+                    progressbar = $( "#progressbar" ),
+                    progressbarValue = progressbar.find( ".ui-progressbar-value" );
+
+            if ( target.is( "#numButton" ) ) {
+                progressbar.progressbar( "option", {
+                    value: Math.floor( Math.random() * 100 )
+                });
+            } else if ( target.is( "#colorButton" ) ) {
+                progressbarValue.css({
+                    "background": '#' + Math.floor( Math.random() * 16777215 ).toString( 16 )
+                });
+            } else if ( target.is( "#falseButton" ) ) {
+                progressbar.progressbar( "option", "value", false );
+            }
+        });
+    });
+</script>
+</html>
